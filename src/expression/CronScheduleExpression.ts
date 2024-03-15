@@ -12,8 +12,8 @@ export class CronScheduleExpression {
     return this;
   }
 
-  everyStepMinute(step: number): this {
-    this._minute = CronField.EVERY_STEP(step);
+  stepMinute(step: number): this {
+    this._minute = CronField.STEP(step);
     return this;
   }
 
@@ -27,8 +27,8 @@ export class CronScheduleExpression {
     return this;
   }
 
-  everyStepHour(step: number): this {
-    this._hour = CronField.EVERY_STEP(step);
+  stepHour(step: number): this {
+    this._hour = CronField.STEP(step);
     return this;
   }
 
@@ -42,8 +42,8 @@ export class CronScheduleExpression {
     return this;
   }
 
-  everyStepDayOfMonth(step: number): this {
-    this._dayOfMonth = CronField.EVERY_STEP(step);
+  stepDayOfMonth(step: number): this {
+    this._dayOfMonth = CronField.STEP(step);
     return this;
   }
 
@@ -57,8 +57,8 @@ export class CronScheduleExpression {
     return this;
   }
 
-  everyStepMonth(step: number): this {
-    this._month = CronField.EVERY_STEP(step);
+  stepMonth(step: number): this {
+    this._month = CronField.STEP(step);
     return this;
   }
 
@@ -72,8 +72,8 @@ export class CronScheduleExpression {
     return this;
   }
 
-  everyStepDayOfWeek(step: number): this {
-    this._dayOfWeek = CronField.EVERY_STEP(step);
+  stepDayOfWeek(step: number): this {
+    this._dayOfWeek = CronField.STEP(step);
     return this;
   }
 
