@@ -10,9 +10,7 @@ describe(CronScheduleExpression, () => {
 
   describe("minute", () => {
     it("should create every step minute", () => {
-      const expression = new CronScheduleExpression()
-        .everyStepMinute(5)
-        .build();
+      const expression = new CronScheduleExpression().stepMinute(5).build();
       expect(expression.toString()).toBe("*/5 * * * *");
     });
 
@@ -26,7 +24,7 @@ describe(CronScheduleExpression, () => {
 
   describe("hour", () => {
     it("should create every step hour", () => {
-      const expression = new CronScheduleExpression().everyStepHour(5).build();
+      const expression = new CronScheduleExpression().stepHour(5).build();
       expect(expression.toString()).toBe("* */5 * * *");
     });
 
@@ -38,9 +36,7 @@ describe(CronScheduleExpression, () => {
 
   describe("dayOfMonth", () => {
     it("should create every step day of month", () => {
-      const expression = new CronScheduleExpression()
-        .everyStepDayOfMonth(5)
-        .build();
+      const expression = new CronScheduleExpression().stepDayOfMonth(5).build();
       expect(expression.toString()).toBe("* * */5 * *");
     });
 
@@ -54,16 +50,14 @@ describe(CronScheduleExpression, () => {
 
   describe("month", () => {
     it("should create every step month", () => {
-      const expression = new CronScheduleExpression().everyStepMonth(5).build();
+      const expression = new CronScheduleExpression().stepMonth(5).build();
       expect(expression.toString()).toBe("* * * */5 *");
     });
   });
 
   describe("dayOfWeek", () => {
     it("should create every step day of week", () => {
-      const expression = new CronScheduleExpression()
-        .everyStepDayOfWeek(5)
-        .build();
+      const expression = new CronScheduleExpression().stepDayOfWeek(5).build();
       expect(expression.toString()).toBe("* * * * */5");
     });
 
@@ -78,9 +72,9 @@ describe(CronScheduleExpression, () => {
   describe("complex", () => {
     it("should create complex expression", () => {
       const expression = new CronScheduleExpression()
-        .everyStepMinute(5)
+        .stepMinute(5)
         .rangeHour(5, 10)
-        .everyStepDayOfMonth(5)
+        .stepDayOfMonth(5)
         .rangeMonth(5, 10)
         .rangeDayOfWeek(5, 10)
         .build();
