@@ -1,4 +1,4 @@
-import { CronField } from "../src/CronField";
+import { CronField } from "../../src/expression/CronField";
 
 describe(CronField, () => {
   it("should return * for every", () => {
