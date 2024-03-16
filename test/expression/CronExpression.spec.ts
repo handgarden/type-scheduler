@@ -1,3 +1,4 @@
+import { DayOfMonthOutOfRangeError } from "../../src/error/DayOfMonthOutOfRangeError";
 import { DayOfWeekOutOfRangeError } from "../../src/error/DayOfWeekOutOfRangeError";
 import { HourOutOfRangeError } from "../../src/error/HourOutOfRangeError";
 import { MinuteOutOfRangeError } from "../../src/error/MinuteOutOfRangeError";
@@ -81,6 +82,24 @@ describe(CronExpression, () => {
     it("should create range day of month", () => {
       const expression = new CronExpression().rangeDayOfMonth(5, 10).build();
       expect(expression.toString()).toBe("* * 5-10 * *");
+    });
+
+    it("should create list day of month", () => {
+      const expression = new CronExpression().dayOfMonth(5, 10, 15).build();
+      expect(expression.toString()).toBe("* * 5,10,15 * *");
+    });
+
+    it("should create list day of month with unique values", () => {
+      const expression = new CronExpression().dayOfMonth(5, 10, 15, 15).build();
+      expect(expression.toString()).toBe("* * 5,10,15 * *");
+    });
+
+    it("should throw error for day of month out of range", () => {
+      try {
+        new CronExpression().dayOfMonth(32).build();
+      } catch (e) {
+        expect(e).toBeInstanceOf(DayOfMonthOutOfRangeError);
+      }
     });
   });
 
