@@ -1,16 +1,17 @@
 import { JobHandler } from "../handler/JobHandler";
+import { JobHandlerManager } from "../handler/JobHandlerManager";
 import { SchedulerOptions } from "./SchedulerOptions";
 
 export class Scheduler {
   private readonly options: SchedulerOptions;
-  private jobs: JobHandler[] = [];
+  private readonly jobHandlerManager: JobHandlerManager;
 
-  constructor(options: SchedulerOptions) {
+  constructor(
+    options: SchedulerOptions,
+    jobHandlerManager: JobHandlerManager = new JobHandlerManager()
+  ) {
     this.options = options;
-  }
-
-  public addJobs(...jobs: JobHandler[]): void {
-    this.jobs = [...this.jobs, ...jobs];
+    this.jobHandlerManager = jobHandlerManager;
   }
 
   public start(): void {
@@ -23,7 +24,8 @@ export class Scheduler {
   }
 
   public scheduleJobs(): void {
-    this.jobs.forEach(this.scheduleJob);
+    const handlers = this.jobHandlerManager.getHandlers();
+    handlers.forEach((handler) => this.scheduleJob(handler));
   }
 
   private scheduleJob(job: JobHandler): void {
