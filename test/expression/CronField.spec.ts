@@ -4,12 +4,13 @@ describe(CronField, () => {
   it("should return * for every", () => {
     expect(CronField.EVERY).toBe("*");
   });
-  it("should return */ for every step", () => {
-    expect(CronField.EVERY_STEP(2)).toBe("*/2");
+
+  it("should return value", () => {
+    expect(CronField.VALUE(1)).toBe(1);
   });
 
   it("should return list", () => {
-    expect(CronField.LIST(["1", "2", "3"])).toBe("1,2,3");
+    expect(CronField.LIST([1, 2, 3])).toBe("1,2,3");
   });
 
   it("should return range", () => {
@@ -17,6 +18,6 @@ describe(CronField, () => {
   });
 
   it("should return step", () => {
-    expect(CronField.STEP(1, 2)).toBe("1/2");
+    expect(CronField.STEP(2)).toBe("*/2");
   });
 });
