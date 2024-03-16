@@ -4,7 +4,9 @@
   "main": "index.js",
   "author": "handgarden <sjungwon03@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "reflect-metadata": "^0.2.1"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.28",
