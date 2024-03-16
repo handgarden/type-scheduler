@@ -13,7 +13,8 @@
     "typescript": "^5.4.2"
   },
   "scripts": {
-    "test": "jest --coverage --silent"
+    "test": "jest --silent",
+    "test:coverage": "jest --coverage --silent"
   },
   "jest": {
     "moduleFileExtensions": [
