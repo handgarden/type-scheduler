@@ -1,2 +1,2 @@
 export * from "./CronField";
-export * from "./CronScheduleExpression";
+export * from "./CronExpression";
