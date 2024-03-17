@@ -2,8 +2,19 @@
   "name": "type-scheduler",
   "version": "1.0.0",
   "main": "index.js",
+  "readmeFilename": "README.md",
   "author": "handgarden <sjungwon03@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./src/index.js",
+      "require": "./src/index.js"
+    }
+  },
   "dependencies": {
     "reflect-metadata": "^0.2.1"
   },
@@ -16,7 +27,8 @@
   },
   "scripts": {
     "test": "jest --silent",
-    "test:coverage": "jest --coverage --silent"
+    "test:coverage": "jest --coverage --silent",
+    "build": "tsc"
   },
   "jest": {
     "moduleFileExtensions": [
