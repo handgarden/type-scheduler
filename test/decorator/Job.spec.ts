@@ -1,4 +1,4 @@
-import Job from "../../src/decorator/Job";
+import { Job } from "../../src/decorator/Job";
 import { CronExpression } from "../../src/expression";
 import { GlobalUtils } from "../../src/utils/GlobalUtils";
 import { MetadataUtils } from "../../src/utils/MetadataUtils";

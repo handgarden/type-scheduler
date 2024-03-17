@@ -1,7 +1,7 @@
 import { CronExpression } from "../expression";
 import { JobHandler } from "./JobHandler";
 
-export default abstract class DefaultJobHandler implements JobHandler {
+export abstract class DefaultJobHandler implements JobHandler {
   private readonly _cronExpression: CronExpression;
 
   constructor(cronExpression: CronExpression) {
