@@ -1,5 +1,5 @@
 import { CronExpression } from "../../src/expression";
-import { DefaultJobHandler } from "../../src/handler/DefaultJobHandler";
+import DefaultJobHandler from "../../src/handler/DefaultJobHandler";
 
 function mockedJobHandler(expression: CronExpression): DefaultJobHandler {
   const mock = class MockedJobHandler extends DefaultJobHandler {
