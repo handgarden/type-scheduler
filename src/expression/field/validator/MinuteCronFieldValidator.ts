@@ -1,4 +1,4 @@
-import { MinuteOutOfRangeError } from "../../../error/MinuteOutOfRangeError";
+import { CronMinuteOutOfRangeError } from "../../../error/CronMinuteOutOfRangeError";
 import { CronFieldValidator } from "./CronFieldValidator";
 
 export class MinuteCronFieldValidator implements CronFieldValidator {
@@ -7,7 +7,7 @@ export class MinuteCronFieldValidator implements CronFieldValidator {
 
   validate(value: number): void {
     if (value < this.min || value > this.max) {
-      throw new MinuteOutOfRangeError(value);
+      throw new CronMinuteOutOfRangeError(value);
     }
   }
 }

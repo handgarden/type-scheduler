@@ -1,8 +1,8 @@
-import { DayOfMonthOutOfRangeError } from "../../../src/error/DayOfMonthOutOfRangeError";
-import { DayOfWeekOutOfRangeError } from "../../../src/error/DayOfWeekOutOfRangeError";
-import { HourOutOfRangeError } from "../../../src/error/HourOutOfRangeError";
-import { MinuteOutOfRangeError } from "../../../src/error/MinuteOutOfRangeError";
-import { MonthOutOfRangeError } from "../../../src/error/MonthOutOfRangeError";
+import { CronDayOfMonthOutOfRangeError } from "../../../src/error/CronDayOfMonthOutOfRangeError";
+import { CronDayOfWeekOutOfRangeError } from "../../../src/error/CronDayOfWeekOutOfRangeError";
+import { CronHourOutOfRangeError } from "../../../src/error/CronHourOutOfRangeError";
+import { CronMinuteOutOfRangeError } from "../../../src/error/CronMinuteOutOfRangeError";
+import { CronMonthOutOfRangeError } from "../../../src/error/CronMonthOutOfRangeError";
 import { CronFieldBuilderFactory } from "../../../src/expression/field/CronFieldBuilderFactory";
 
 describe(CronFieldBuilderFactory, () => {
@@ -18,7 +18,7 @@ describe(CronFieldBuilderFactory, () => {
       try {
         builder.value(60);
       } catch (e) {
-        expect(e).toBeInstanceOf(MinuteOutOfRangeError);
+        expect(e).toBeInstanceOf(CronMinuteOutOfRangeError);
       }
     });
   });
@@ -33,7 +33,7 @@ describe(CronFieldBuilderFactory, () => {
       try {
         builder.value(24);
       } catch (e) {
-        expect(e).toBeInstanceOf(HourOutOfRangeError);
+        expect(e).toBeInstanceOf(CronHourOutOfRangeError);
       }
     });
   });
@@ -48,7 +48,7 @@ describe(CronFieldBuilderFactory, () => {
       try {
         builder.value(0);
       } catch (e) {
-        expect(e).toBeInstanceOf(DayOfMonthOutOfRangeError);
+        expect(e).toBeInstanceOf(CronDayOfMonthOutOfRangeError);
       }
     });
   });
@@ -63,7 +63,7 @@ describe(CronFieldBuilderFactory, () => {
       try {
         builder.value(13);
       } catch (e) {
-        expect(e).toBeInstanceOf(MonthOutOfRangeError);
+        expect(e).toBeInstanceOf(CronMonthOutOfRangeError);
       }
     });
   });
@@ -78,7 +78,7 @@ describe(CronFieldBuilderFactory, () => {
       try {
         builder.value(7);
       } catch (e) {
-        expect(e).toBeInstanceOf(DayOfWeekOutOfRangeError);
+        expect(e).toBeInstanceOf(CronDayOfWeekOutOfRangeError);
       }
     });
   });

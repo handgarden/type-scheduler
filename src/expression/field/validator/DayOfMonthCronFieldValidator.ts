@@ -1,4 +1,4 @@
-import { DayOfMonthOutOfRangeError } from "../../../error/DayOfMonthOutOfRangeError";
+import { CronDayOfMonthOutOfRangeError } from "../../../error/CronDayOfMonthOutOfRangeError";
 import { CronFieldValidator } from "./CronFieldValidator";
 
 export class DayOfMonthCronFieldValidator implements CronFieldValidator {
@@ -7,7 +7,7 @@ export class DayOfMonthCronFieldValidator implements CronFieldValidator {
 
   validate(value: number): void {
     if (value < this.min || value > this.max) {
-      throw new DayOfMonthOutOfRangeError(value);
+      throw new CronDayOfMonthOutOfRangeError(value);
     }
   }
 }

@@ -1,4 +1,4 @@
-export class DayOfWeekOutOfRangeError extends Error {
+export class CronDayOfWeekOutOfRangeError extends Error {
   constructor(dayOfWeek: number) {
     super(`
       Cannot create a cron expression with a day of week out of range.

@@ -1,8 +1,8 @@
-import { DayOfMonthOutOfRangeError } from "../../src/error/DayOfMonthOutOfRangeError";
-import { DayOfWeekOutOfRangeError } from "../../src/error/DayOfWeekOutOfRangeError";
-import { HourOutOfRangeError } from "../../src/error/HourOutOfRangeError";
-import { MinuteOutOfRangeError } from "../../src/error/MinuteOutOfRangeError";
-import { MonthOutOfRangeError } from "../../src/error/MonthOutOfRangeError";
+import { CronDayOfMonthOutOfRangeError } from "../../src/error/CronDayOfMonthOutOfRangeError";
+import { CronDayOfWeekOutOfRangeError } from "../../src/error/CronDayOfWeekOutOfRangeError";
+import { CronHourOutOfRangeError } from "../../src/error/CronHourOutOfRangeError";
+import { CronMinuteOutOfRangeError } from "../../src/error/CronMinuteOutOfRangeError";
+import { CronMonthOutOfRangeError } from "../../src/error/CronMonthOutOfRangeError";
 import { CronExpression } from "../../src/expression";
 
 describe(CronExpression, () => {
@@ -46,7 +46,7 @@ describe(CronExpression, () => {
       try {
         new CronExpression().minute((minute) => minute.value(60)).build();
       } catch (e) {
-        expect(e).toBeInstanceOf(MinuteOutOfRangeError);
+        expect(e).toBeInstanceOf(CronMinuteOutOfRangeError);
       }
     });
   });
@@ -84,7 +84,7 @@ describe(CronExpression, () => {
       try {
         new CronExpression().hour((hour) => hour.value(24)).build();
       } catch (e) {
-        expect(e).toBeInstanceOf(HourOutOfRangeError);
+        expect(e).toBeInstanceOf(CronHourOutOfRangeError);
       }
     });
   });
@@ -124,7 +124,7 @@ describe(CronExpression, () => {
           .dayOfMonth((dayOfMonth) => dayOfMonth.value(0))
           .build();
       } catch (e) {
-        expect(e).toBeInstanceOf(DayOfMonthOutOfRangeError);
+        expect(e).toBeInstanceOf(CronDayOfMonthOutOfRangeError);
       }
     });
   });
@@ -162,7 +162,7 @@ describe(CronExpression, () => {
       try {
         new CronExpression().month((month) => month.value(13)).build();
       } catch (e) {
-        expect(e).toBeInstanceOf(MonthOutOfRangeError);
+        expect(e).toBeInstanceOf(CronMonthOutOfRangeError);
       }
     });
   });
@@ -202,7 +202,7 @@ describe(CronExpression, () => {
           .dayOfWeek((dayOfWeek) => dayOfWeek.value(7))
           .build();
       } catch (e) {
-        expect(e).toBeInstanceOf(DayOfWeekOutOfRangeError);
+        expect(e).toBeInstanceOf(CronDayOfWeekOutOfRangeError);
       }
     });
   });

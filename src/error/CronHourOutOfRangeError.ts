@@ -1,4 +1,4 @@
-export class HourOutOfRangeError extends Error {
+export class CronHourOutOfRangeError extends Error {
   constructor(hour: number) {
     super(`
       Cannot create a cron expression with an hour out of range.

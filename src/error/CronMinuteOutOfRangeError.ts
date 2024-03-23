@@ -1,4 +1,4 @@
-export class MinuteOutOfRangeError extends Error {
+export class CronMinuteOutOfRangeError extends Error {
   constructor(minute: number) {
     super(`
       Cannot create a cron expression with a minute out of range.
