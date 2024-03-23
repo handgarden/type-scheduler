@@ -18,16 +18,16 @@ describe(CronFieldBuilder, () => {
 
   describe("list", () => {
     it("should return ListCronField", () => {
-      expect(builder.list([1, 2])).toBeInstanceOf(ListCronField);
+      expect(builder.list(1, 2)).toBeInstanceOf(ListCronField);
     });
 
     it("return ListCronField should join values with comma", () => {
-      const field = builder.list([1, 2]);
+      const field = builder.list(1, 2);
       expect(field.build()).toBe("1,2");
     });
 
     it("should validate values", () => {
-      builder.list([1, 2]);
+      builder.list(1, 2);
       expect(validator.validate).toHaveBeenCalledWith(2);
     });
 
@@ -37,7 +37,7 @@ describe(CronFieldBuilder, () => {
       });
 
       try {
-        builder.list([1, 2]);
+        builder.list(1, 2);
       } catch (e: any) {
         expect(e).toBeInstanceOf(Error);
         expect(e.message).toBe("Invalid value");
