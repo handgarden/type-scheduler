@@ -8,7 +8,7 @@ import { WildcardCronField } from "./WildcardCronField";
 export class CronFieldBuilder {
   constructor(private readonly validator: CronFieldValidator) {}
 
-  list(values: number[]): CronField {
+  list(...values: number[]): CronField {
     for (let value of values) {
       this.validateValue(value);
     }
@@ -41,7 +41,7 @@ export class CronFieldBuilder {
   parse(value: string): CronField {
     if (value.includes(",")) {
       const values = value.split(",").map((val) => parseInt(val));
-      return this.list(values);
+      return this.list(...values);
     }
     if (value.includes("-")) {
       const [min, max] = value.split("-").map((val) => parseInt(val));
