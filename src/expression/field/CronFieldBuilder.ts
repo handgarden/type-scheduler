@@ -1,4 +1,3 @@
-import { StepOutOfRangeError } from "../../error/StepOutOfRangeError";
 import { CronField } from "./CronField";
 import { ListCronField } from "./ListCronField";
 import { RangeCronField } from "./RangeCronField";
@@ -25,9 +24,7 @@ export class CronFieldBuilder {
   }
 
   step(step: number): CronField {
-    if (step < 1) {
-      throw new StepOutOfRangeError(step);
-    }
+    this.validateValue(step);
     return new StepCronField(step);
   }
 
