@@ -28,7 +28,7 @@
   "scripts": {
     "test": "jest --silent",
     "test:coverage": "jest --coverage --silent",
-    "build": "tsc"
+    "build": "tsc -p tsconfig.build.json"
   },
   "jest": {
     "moduleFileExtensions": [
