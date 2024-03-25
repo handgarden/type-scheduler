@@ -1,5 +1,4 @@
-import { CronExpression } from "../expression";
-import { CronExpressionParser } from "../expression/CronExpressionParser";
+import { CronExpression, CronExpressionParser } from "../expression";
 import { JobHandler } from "./JobHandler";
 
 export abstract class DefaultJobHandler implements JobHandler {
