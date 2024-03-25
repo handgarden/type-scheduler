@@ -1,11 +1,11 @@
+import { Container } from "../common";
 import { ClassType } from "../common/ClassType";
-import { Container } from "../common/Container";
 import { ContainerRequiredError } from "../error/ContainerRequiredError";
 import { CronExpression } from "../expression";
 import { JobHandler } from "../handler";
 
-export class JobMetadataArgs {
-  public readonly target: ClassType<JobHandler> | Function;
+export class JobHandlerMetadataArgs {
+  public readonly target: ClassType<JobHandler>;
   public readonly cronExpression: string | CronExpression;
   public readonly name?: string;
   public readonly token?: string | symbol;
