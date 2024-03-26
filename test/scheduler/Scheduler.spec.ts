@@ -1,57 +1,74 @@
-import { JobHandler } from "../../src/handler/JobHandler";
-import { JobHandlerManager } from "../../src/handler/JobHandlerManager";
+import { DefaultJobHandlerManager } from "../../src/handler/DefaultJobHandlerManager";
 import { ScheduleRunner } from "../../src/scheduler/ScheduleRunner";
 import { Scheduler } from "../../src/scheduler/Scheduler";
-import { SchedulerOptions } from "../../src/scheduler/SchedulerOptions";
+import { SchedulerOptions } from "../../src";
+import { Container } from "../../src/common";
+import { JobHandlerMetadataScanner } from "../../src/metadata/JobHandlerMetadataScanner";
+import { DefaultJobHandler } from "../../src/handler";
 
 describe(Scheduler, () => {
-  let jobHandlerManager: JobHandlerManager;
+  let jobHandlerManager: DefaultJobHandlerManager;
   let scheduler: Scheduler;
+  let runner: ScheduleRunner;
   let options: SchedulerOptions;
+  let container: Container;
+  let metadataScanner: JobHandlerMetadataScanner;
 
   beforeEach(() => {
-    const handlers: JobHandler[] = [];
+    runner = {
+      schedule: jest.fn(),
+    } as unknown as ScheduleRunner;
+
+    container = {
+      get: jest.fn(),
+    };
+
     jobHandlerManager = {
-      handlers,
-      addHandlers: jest
-        .fn()
-        .mockImplementation((...newHandlers) => handlers.push(...newHandlers)),
-      getHandlers: jest.fn().mockReturnValue(handlers),
-    } as unknown as JobHandlerManager;
+      addHandlers: jest.fn(),
+      getHandlers: jest.fn().mockReturnValue([]),
+    } as unknown as DefaultJobHandlerManager;
 
-    options = createMockOptions(true, { schedule: jest.fn() });
+    metadataScanner = {
+      autoScan: jest.fn(),
+    } as unknown as JobHandlerMetadataScanner;
 
-    scheduler = new Scheduler(options, jobHandlerManager);
+    options = {
+      runner,
+      container,
+      manager: jobHandlerManager,
+      metadataScanner,
+    };
+
+    scheduler = new Scheduler(options);
   });
 
   describe("start", () => {
-    it("should start the scheduler", () => {
-      jobHandlerManager.addHandlers({
-        constructor: {
-          name: "MockedJobHandler",
-        },
-        handle: jest.fn(),
-        cronExpression: "0 0 * * *",
-      } as JobHandler);
-
+    it("should call metadataScanner.autoScan", () => {
       scheduler.start();
 
-      expect(options.getRunner().schedule).toHaveBeenCalled();
+      expect(metadataScanner.autoScan).toHaveBeenCalled();
     });
 
-    it("should not start the scheduler if it is disabled", () => {
+    it("should call jobHandlerManager.getHandlers", () => {
       scheduler.start();
 
-      expect(options.getRunner().schedule).not.toHaveBeenCalled();
+      expect(jobHandlerManager.getHandlers).toHaveBeenCalled();
+    });
+
+    it("should call runner.schedule for each handler", () => {
+      jobHandlerManager.getHandlers = jest.fn().mockReturnValue([
+        {
+          constructor: {
+            name: "MockedJobHandler",
+          },
+          handle: jest.fn(),
+          cronExpression: "0 0 * * *",
+        } as unknown as DefaultJobHandler,
+      ]);
+
+      scheduler.start();
+
+      expect(runner.schedule).toHaveBeenCalled();
     });
   });
-
-  function createMockOptions(enabled: boolean, runner: ScheduleRunner) {
-    return {
-      enabled,
-      runner,
-      getRunner: () => runner,
-      isEnabled: () => enabled,
-    } as unknown as SchedulerOptions;
-  }
 });
