@@ -1,18 +1,34 @@
 {
   "name": "type-scheduler",
   "version": "0.0.1",
-  "main": "index.js",
+  "description": "Decorator based abstract scheduler for TypeScript",
+  "keywords": [
+    "scheduler",
+    "decorator",
+    "typescript",
+    "cron",
+    "node-cron"
+  ],
+  "bugs": {
+    "url": "https://github.com/handgarden/type-scheduler/issues"
+  },
+  "main": "dist/index.js",
   "readmeFilename": "README.md",
-  "author": "handgarden <sjungwon03@gmail.com>",
+  "author": "handgarden <sjungwon03@gmail.com> (https://github.com/handgarden)",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=16.0.0"
   },
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./src/index.js",
-      "require": "./src/index.js"
+      "types": "./dist/index.d.ts"
     }
   },
   "dependencies": {
@@ -28,7 +44,8 @@
   "scripts": {
     "test": "jest --silent",
     "test:coverage": "jest --coverage --silent",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "publish": "npm run test && npm run build && npm publish --access public"
   },
   "jest": {
     "moduleFileExtensions": [
