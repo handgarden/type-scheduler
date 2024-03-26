@@ -1,24 +1,12 @@
+import { Container } from "../common";
 import { ScheduleRunner } from "./ScheduleRunner";
 
 export class SchedulerOptions {
-  private readonly enabled: boolean;
-  private readonly runner: ScheduleRunner;
-  constructor({
-    enabled = true,
-    runner,
-  }: {
-    enabled?: boolean;
-    runner: ScheduleRunner;
-  }) {
-    this.enabled = enabled;
+  public runner: ScheduleRunner;
+  public container?: Container;
+
+  constructor(runner: ScheduleRunner, container?: Container) {
     this.runner = runner;
-  }
-
-  public isEnabled(): boolean {
-    return this.enabled;
-  }
-
-  public getRunner(): ScheduleRunner {
-    return this.runner;
+    this.container = container;
   }
 }
