@@ -1,13 +1,13 @@
-import { JobMetadataArgs } from "../metadata/JobMetadataArgs";
+import { JobHandlerMetadataArgs } from "../metadata/JobHandlerMetadataArgs";
 
 export class JobMetadataStorage {
-  private readonly jobMetadataArgs: JobMetadataArgs[] = [];
+  private readonly jobMetadataArgs: JobHandlerMetadataArgs[] = [];
 
-  public addMetadataArgs(metadata: JobMetadataArgs): void {
+  public addMetadataArgs(metadata: JobHandlerMetadataArgs): void {
     this.jobMetadataArgs.push(metadata);
   }
 
-  public getMetadataArgs(): JobMetadataArgs[] {
-    return this.jobMetadataArgs;
+  public getMetadataArgs(): JobHandlerMetadataArgs[] {
+    return [...this.jobMetadataArgs];
   }
 }
