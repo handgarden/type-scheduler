@@ -6,7 +6,10 @@ import { MetadataUtils } from "../utils/MetadataUtils";
 
 export function Job(
   cronExpression: string | CronExpression,
-  options?: Omit<JobHandlerMetadataArgs, "cronExpression" | "target">
+  options?: {
+    name?: string;
+    token?: string | symbol;
+  }
 ) {
   return function (constructor: ClassType<JobHandler> | InstanceType<any>) {
     const metadata = new JobHandlerMetadataArgs({
