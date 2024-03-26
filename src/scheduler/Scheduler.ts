@@ -11,8 +11,11 @@ export class Scheduler {
 
   constructor(options: SchedulerOptions) {
     this.runner = options.runner;
-    this.metadataScanner = options.metadataScanner;
-    this.jobHandlerManager = options.manager;
+    this.jobHandlerManager = new DefaultJobHandlerManager();
+    this.metadataScanner = new JobHandlerMetadataScanner({
+      manager: this.jobHandlerManager,
+      container: options.container,
+    });
   }
 
   public start(): void {
@@ -20,7 +23,7 @@ export class Scheduler {
     this.scheduleJobs();
   }
 
-  public initialize(): void {
+  private initialize(): void {
     this.metadataScanner?.autoScan();
   }
 
