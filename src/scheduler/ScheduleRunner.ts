@@ -1,3 +1,3 @@
 export interface ScheduleRunner {
-  schedule(expression: string, job: Function): void;
+  schedule(expression: string, job: () => void | Promise<void>): void;
 }
