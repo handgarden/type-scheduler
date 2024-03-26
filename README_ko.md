@@ -145,7 +145,7 @@ main();
 - DI 컨테이너를 같이 사용한다면 다음과 같은 이점을 얻을 수 있습니다.
   - 작업 객체에 의존성 주입 가능
   - 작업 자동 등록
-- 아래의 예제는 [TypeDI](https://github.com/typestack/typedi) 를 사용했습니다. 다른 DI 컨테이너 사용 시 해당 컨테이너 방식에 맞게 적용하면 동일하게 사용 가능합니다.
+- 아래의 예제는 [TypeDI](https://github.com/typestack/typedi) 를 사용했습니다. 다른 DI 컨테이너 사용 시 해당 컨테이너 방식에 맞게 코드를 수정하면 동일하게 사용 가능합니다.
 
 ### 예시
 
@@ -159,7 +159,7 @@ class UserRepository extends Repository<User> {
     super(User, dataSource.manager);
   }
 
-  findAllUserByGreaterThanGivenScore(score: number) {
+  findAllUserGreaterThanGivenScore(score: number) {
     return this.find({
       where: {
         score: GreaterThan(score),
@@ -179,7 +179,7 @@ class UpdatePassedUser {
 
   async handle() {
     const passedUsers =
-      await this.userRepository.findAllUserByGreaterThanGivenScore(80);
+      await this.userRepository.findAllUserGreaterThanGivenScore(80);
     for (const passedUser of passedUsers) {
       passedUsers.passed = true;
       await this.userRepository.save(passedUser);
@@ -196,7 +196,6 @@ import cron from "node-cron";
 function main() {
   const scheduler = new Scheduler({
     runner: cron,
-    jobs: [ExampleJob, EveryDayAtNoonJob],
     container: Container,
   });
 
@@ -210,7 +209,7 @@ main();
 
 ### 토큰
 
-- 타입스크립트는 interface가 js로 트랜스파일링 되기 전에만 존재하기 때문에 런타임에는 interface 기반의 의존성 주입이 불가능합니다. 따라서 대부분의 타입스크립트 기반 DI 컨테이너(ex: TypeDI, Inversify)는 token을 사용해서 등록하도록 안내하고 있습니다.
+- 타입스크립트의 interface는 js로 트랜스파일링 되기 전에만 존재하기 때문에 런타임에는 interface 기반의 의존성 주입이 불가능합니다. 따라서 대부분의 타입스크립트 기반 DI 컨테이너(ex: TypeDI, Inversify)는 token을 사용해서 등록하도록 안내하고 있습니다.
 - 만약 토큰을 사용해서 Job을 컨테이너에 등록한다면 @Job 데코레이터 옵션에 해당 토큰을 명시해야합니다.
 
 ```ts
@@ -220,7 +219,6 @@ class UpdatePassedUser {
 
   async handle() {
     const passedUsers =
-      await this.userRepository.findAllUserByGreaterThanGivenScore(80);
     for (const passedUser of passedUsers) {
       passedUsers.passed = true;
       await this.userRepository.save(passedUser);
