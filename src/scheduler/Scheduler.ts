@@ -1,38 +1,37 @@
-import { JobHandler } from "../handler/JobHandler";
-import { JobHandlerManager } from "../handler/JobHandlerManager";
+import { DefaultJobHandler } from "../handler";
+import { DefaultJobHandlerManager } from "../handler/DefaultJobHandlerManager";
+import { JobHandlerMetadataScanner } from "../metadata/JobHandlerMetadataScanner";
 import { SchedulerOptions } from "./SchedulerOptions";
+import { ScheduleRunner } from "./ScheduleRunner";
 
 export class Scheduler {
-  private readonly options: SchedulerOptions;
-  private readonly jobHandlerManager: JobHandlerManager;
+  private readonly jobHandlerManager: DefaultJobHandlerManager;
+  private readonly runner: ScheduleRunner;
+  private readonly metadataScanner: JobHandlerMetadataScanner;
 
-  constructor(
-    options: SchedulerOptions,
-    jobHandlerManager: JobHandlerManager = new JobHandlerManager()
-  ) {
-    this.options = options;
-    this.jobHandlerManager = jobHandlerManager;
+  constructor(options: SchedulerOptions) {
+    this.runner = options.runner;
+    this.metadataScanner = options.metadataScanner;
+    this.jobHandlerManager = options.manager;
   }
 
   public start(): void {
-    if (this.options.isEnabled()) {
-      console.log("Scheduler started");
-      this.scheduleJobs();
-    } else {
-      console.log("Scheduler is disabled");
-    }
+    this.initialize();
+    this.scheduleJobs();
   }
 
-  public scheduleJobs(): void {
+  public initialize(): void {
+    this.metadataScanner?.autoScan();
+  }
+
+  private scheduleJobs(): void {
     const handlers = this.jobHandlerManager.getHandlers();
     handlers.forEach((handler) => this.scheduleJob(handler));
   }
 
-  private scheduleJob(job: JobHandler): void {
+  private scheduleJob(job: DefaultJobHandler): void {
     const expression = job.cronExpression;
-    console.log(
-      `Scheduling job ${job.constructor.name} with expression: ${expression}`
-    );
-    this.options.getRunner().schedule(job.cronExpression, job.handle.bind(job));
+    console.log(`Scheduling job ${job.name} with expression: ${expression}`);
+    this.runner.schedule(job.cronExpression, job.handle.bind(job));
   }
 }
