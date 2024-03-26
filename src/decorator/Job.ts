@@ -1,10 +1,19 @@
+import { ClassType } from "../common/ClassType";
 import { CronExpression } from "../expression";
-import { JobMetadataArgs } from "../metadata/JobMetadataArgs";
+import { JobHandler } from "../handler";
+import { JobHandlerMetadataArgs } from "../metadata/JobHandlerMetadataArgs";
 import { MetadataUtils } from "../utils/MetadataUtils";
 
-export function Job(cronExpression: string | CronExpression) {
-  return function (constructor: Function) {
-    const metadata = new JobMetadataArgs(constructor, cronExpression);
+export function Job(
+  cronExpression: string | CronExpression,
+  options?: Omit<JobHandlerMetadataArgs, "cronExpression" | "target">
+) {
+  return function (constructor: ClassType<JobHandler> | InstanceType<any>) {
+    const metadata = new JobHandlerMetadataArgs({
+      target: constructor,
+      cronExpression,
+      ...options,
+    });
     MetadataUtils.getMetadataStorage().addMetadataArgs(metadata);
   };
 }
