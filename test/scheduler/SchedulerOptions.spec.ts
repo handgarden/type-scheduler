@@ -14,17 +14,5 @@ describe(SchedulerOptions, () => {
       expect(options.runner).toBe(runner);
       expect(options.container).toBe(container);
     });
-
-    it("should create manager and metadataScanner", () => {
-      const runner: ScheduleRunner = {
-        schedule: jest.fn(),
-      };
-      const container: Container = {
-        get: jest.fn(),
-      };
-      const options = new SchedulerOptions(runner, container);
-      expect(options.manager).toBeDefined();
-      expect(options.metadataScanner).toBeDefined();
-    });
   });
 });

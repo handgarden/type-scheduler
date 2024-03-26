@@ -6,13 +6,36 @@ import { Container } from "../../src/common";
 import { JobHandlerMetadataScanner } from "../../src/metadata/JobHandlerMetadataScanner";
 import { DefaultJobHandler } from "../../src/handler";
 
+let jobHandlerManager: DefaultJobHandlerManager = {
+  addHandlers: jest.fn(),
+  getHandlers: jest.fn().mockReturnValue([]),
+} as unknown as DefaultJobHandlerManager;
+
+jest.mock("../../src/handler/DefaultJobHandlerManager", () => {
+  return {
+    DefaultJobHandlerManager: jest.fn().mockImplementation(() => {
+      return jobHandlerManager;
+    }),
+  };
+});
+
+let metadataScanner: JobHandlerMetadataScanner = {
+  autoScan: jest.fn(),
+} as unknown as JobHandlerMetadataScanner;
+
+jest.mock("../../src/metadata/JobHandlerMetadataScanner", () => {
+  return {
+    JobHandlerMetadataScanner: jest.fn().mockImplementation(() => {
+      return metadataScanner;
+    }),
+  };
+});
+
 describe(Scheduler, () => {
-  let jobHandlerManager: DefaultJobHandlerManager;
   let scheduler: Scheduler;
   let runner: ScheduleRunner;
   let options: SchedulerOptions;
   let container: Container;
-  let metadataScanner: JobHandlerMetadataScanner;
 
   beforeEach(() => {
     runner = {
@@ -23,21 +46,22 @@ describe(Scheduler, () => {
       get: jest.fn(),
     };
 
-    jobHandlerManager = {
-      addHandlers: jest.fn(),
-      getHandlers: jest.fn().mockReturnValue([]),
-    } as unknown as DefaultJobHandlerManager;
-
     metadataScanner = {
       autoScan: jest.fn(),
     } as unknown as JobHandlerMetadataScanner;
 
+    const handlers: DefaultJobHandler[] = [];
+    jobHandlerManager = {
+      addHandlers: jest.fn((...args) => {
+        handlers.push(...args);
+      }),
+      getHandlers: jest.fn().mockReturnValue(handlers),
+    } as unknown as DefaultJobHandlerManager;
+
     options = {
       runner,
       container,
-      manager: jobHandlerManager,
-      metadataScanner,
-    };
+    } as unknown as SchedulerOptions;
 
     scheduler = new Scheduler(options);
   });
