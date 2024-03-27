@@ -160,10 +160,10 @@ class UserRepository extends Repository<User> {
     super(User, dataSource.manager);
   }
 
-  findAllUserGreaterThanGivenScore(score: number) {
+  findAllUserMoreThanGivenScore(score: number) {
     return this.find({
       where: {
-        score: GreaterThan(score),
+        score: MoreThan(score),
       },
     });
   }
@@ -179,8 +179,9 @@ class UpdatePassedUser {
   constructor(private readonly userRepository: UserRepository) {}
 
   async handle() {
-    const passedUsers =
-      await this.userRepository.findAllUserGreaterThanGivenScore(80);
+    const passedUsers = await this.userRepository.findAllUserMoreThanGivenScore(
+      80
+    );
     for (const passedUser of passedUsers) {
       passedUsers.passed = true;
       await this.userRepository.save(passedUser);
@@ -206,11 +207,11 @@ function main() {
 main();
 ```
 
-- 끝 입니다. TypeScheduler는 알아서 Job 데코레이터가 있는 반복 작업 인스턴스를 컨테이너에서 꺼내서 구체 스케줄러에 등록할 것입니다.
+- 끝 입니다. TypeScheduler는 알아서 Job 데코레이터가 있는 작업 인스턴스를 컨테이너에서 꺼내고 스케줄러 구현체에 등록할 것입니다.
 
 ### 토큰
 
-- 타입스크립트의 interface는 js로 트랜스파일링 되기 전에만 존재하기 때문에 런타임에는 interface 기반의 의존성 주입이 불가능합니다. 따라서 대부분의 타입스크립트 기반 DI 컨테이너(ex: TypeDI, Inversify)는 token을 사용해서 등록하도록 안내하고 있습니다.
+- 타입스크립트의 interface는 js로 트랜스파일링 되기 전에만 존재하기 때문에 런타임에는 interface 기반의 의존성 주입이 불가능합니다. 따라서 대부분의 타입스크립트 기반 DI 컨테이너(ex: TypeDI, InversifyJS)는 token을 사용해서 등록하도록 안내하고 있습니다.
 - 만약 토큰을 사용해서 Job을 컨테이너에 등록했다면 @Job 데코레이터 옵션에 해당 토큰을 명시해야합니다.
 
 ```ts
