@@ -30,8 +30,6 @@ Type-Scheduler는 [TypeGraphQL](https://typegraphql.com/), [TypeORM](https://typ
 
 ### 반복 작업 생성
 
-반복할 작업을 아래와 같이 객체로 생성합니다.
-
 **@Job**
 
 - `@Job` 데코레이터는 해당 클래스가 반복 작업임을 나타내며 어느 주기로 반복할 것인지에 대한 Cron 표현식을 인자로 받습니다.
@@ -69,7 +67,7 @@ class EveryDayAtNoonJob implements JobHandler {
 - `name 옵션`을 추가하면 작업에 대한 이름을 별도로 정의할 수 있습니다.
 
 ```ts
-@Job("* * * * *", { name: "Good afternoon schedule" })
+@Job("* 12 * * *", { name: "Good afternoon schedule" })
 class EveryDayAtNoonJob implements JobHandler {
   async handle() {
     console.log("Good afternoon");
