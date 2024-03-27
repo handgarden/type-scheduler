@@ -1,5 +1,10 @@
 # TypeScheduler
 
+Language:
+
+- [English](https://github.com/handgarden/type-scheduler/blob/main/README.md)
+- [Korean](https://github.com/handgarden/type-scheduler/blob/main/README_ko.md)
+
 **TypeScheduler** is an abstract layer that allows flexible usage of a Node.js scheduler based on Cron expression.
 
 You can register repetitive tasks with decorators, represent Cron expressions as objects, and provide parsing and validation functionalities for strings. Additionally, when used with a DI container, dependency injection can be applied to task objects, and tasks are automatically registered.
