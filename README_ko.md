@@ -1,10 +1,10 @@
 # TypeScheduler
 
-**TypeSchedule**는 NodeJs에서 실행 가능한 Cron 표현식 기반 스케줄러에 대한 추상 레이어입니다.
+**TypeScheduler**는 NodeJs의 Cron 표현식 기반 스케줄러를 유연하게 사용할 수 있는 추상 레이어입니다.
 
-데코레이터를 사용해 작업을 스케줄러에 등록할 수 있으며 Cron 표현식을 객체로 생성하거나 문자열로 작성 후 객체로 파싱 및 검증하는 기능을 제공합니다. 추가로 DI 컨테이너를 같이 사용한다면 반복 작업에 의존성 주입이 가능하고 작업이 자동으로 등록됩니다.
+데코레이터를 사용해 반복할 작업을 스케줄러에 등록할 수 있으며 Cron 표현식을 객체로 표현할 수 있고 문자열로 작성하면 파싱 및 검증하는 기능을 제공합니다. 추가로 DI 컨테이너를 같이 사용한다면 작업 객체에 의존성 주입이 가능하고 작업이 자동으로 등록됩니다.
 
-실제 등록한 코드의 실행을 위해서는 [node-cron](https://www.npmjs.com/package/node-cron)과 같이 실제 작업을 일정 시간마다 실행해주는 기능을 구현한 패키지를 주입해야합니다.
+실제 반복할 작업의 실행을 위해서는 [node-cron](https://www.npmjs.com/package/node-cron)과 같이 작업을 일정 시간마다 실행해주는 기능을 구현한 패키지를 주입해야합니다.
 
 Type-Scheduler는 [TypeGraphQL](https://typegraphql.com/), [TypeORM](https://typeorm.io/), [TypeDI](https://github.com/typestack/typedi)와 같은 타입스크립트 기반 객체 지향 프레임워크의 영향을 받아 만들어졌습니다.
 
@@ -12,7 +12,7 @@ Type-Scheduler는 [TypeGraphQL](https://typegraphql.com/), [TypeORM](https://typ
 
 1. TypeScheduler를 설치합니다.  
    `npm install type-scheduler`
-2. 실제 스케줄한 작업을 실행할 구현체를 선택해 설치합니다. 예시로 node-cron을 설치했습니다.
+2. 스케줄 구현체를 선택해 설치합니다. 예시로 node-cron을 설치했습니다.
    `npm install node-cron`
 
 **TypeScript 환경 설정**
@@ -35,7 +35,7 @@ Type-Scheduler는 [TypeGraphQL](https://typegraphql.com/), [TypeORM](https://typ
 **@Job**
 
 - `@Job` 데코레이터는 해당 클래스가 반복 작업임을 나타내며 어느 주기로 반복할 것인지에 대한 Cron 표현식을 인자로 받습니다.
-- 작성된 Cron 문자열 표현식은 실행 시 값을 해석하고 검증 후 스케줄러에 등록됩니다.
+- 작성된 Cron 문자열 표현식은 실행 시 객체로 해석되고 검증 후 스케줄러에 등록됩니다.
 
 ```ts
 @Job("* * * * *")
@@ -90,8 +90,8 @@ class EveryDayAtNoonJob {
 
 ### 반복 작업 등록
 
-- 아쉽게도 다른 파일 혹은 폴더에 생성한 작업을 스케줄러가 완전 자동으로 읽어오는 것을 불가능합니다.
-- 스케줄러에 작업을 추가해야 정상적으로 인식하고 등록할 수 있습니다.
+- 아쉽게도 다른 파일 혹은 폴더에 생성한 작업을 컨테이너 없이 스케줄러가 자동으로 읽어오는 것은 불가능합니다.
+- 스케줄러에 직접 작업을 추가해야 정상적으로 인식하고 등록할 수 있습니다.
 
 ```ts
 const scheduler = new Scheduler({
@@ -102,6 +102,7 @@ const scheduler = new Scheduler({
 ### 스케줄러 구현체 등록
 
 - 마지막으로 실제 반복 작업을 정해진 시간에 실행해줄 구현체를 등록해야 합니다.
+- 구현체에 대한 인터페이스는 아래와 같습니다.
 
 ```ts
 export interface ScheduleRunner {
@@ -109,7 +110,7 @@ export interface ScheduleRunner {
 }
 ```
 
-- ScheduleRunner와 같은 타입을 가진 구현체는 호환이 가능하며 만약 구현체의 작업 등록 방식이 다르다면 호환되도록 아래와 같이 어댑터를 만들어 등록할 수 있습니다.
+- ScheduleRunner 인터페이스와 호환되는 구현체는 바로 사용 가능합니다. 만약 구현체의 작업 등록 방식이 다르다면 호환되도록 아래와 같이 어댑터를 만들어 등록할 수 있습니다.
 
 ```ts
 export class ScheduleRunnerAdapter {
@@ -143,8 +144,8 @@ main();
 ## DI 컨테이너 조합
 
 - DI 컨테이너를 같이 사용한다면 다음과 같은 이점을 얻을 수 있습니다.
-  - 작업 객체에 의존성 주입 가능
-  - 작업 자동 등록
+  1. 작업 객체에 의존성 주입 가능
+  2. 작업 자동 등록
 - 아래의 예제는 [TypeDI](https://github.com/typestack/typedi) 를 사용했습니다. 다른 DI 컨테이너 사용 시 해당 컨테이너 방식에 맞게 코드를 수정하면 동일하게 사용 가능합니다.
 
 ### 예시
@@ -210,7 +211,7 @@ main();
 ### 토큰
 
 - 타입스크립트의 interface는 js로 트랜스파일링 되기 전에만 존재하기 때문에 런타임에는 interface 기반의 의존성 주입이 불가능합니다. 따라서 대부분의 타입스크립트 기반 DI 컨테이너(ex: TypeDI, Inversify)는 token을 사용해서 등록하도록 안내하고 있습니다.
-- 만약 토큰을 사용해서 Job을 컨테이너에 등록한다면 @Job 데코레이터 옵션에 해당 토큰을 명시해야합니다.
+- 만약 토큰을 사용해서 Job을 컨테이너에 등록했다면 @Job 데코레이터 옵션에 해당 토큰을 명시해야합니다.
 
 ```ts
 @Job("* 12 * * *", { name: "update passed user", token: UpdatePassedUserToken })
