@@ -1,6 +1,4 @@
-import { ClassType } from "./ClassType";
-
-export type Token<T> = string | symbol | ClassType<T>;
+import { Token } from "./Token";
 
 export interface Container {
   get<T>(token: Token<T>): T | null;

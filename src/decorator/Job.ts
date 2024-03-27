@@ -1,4 +1,5 @@
 import { ClassType } from "../common/ClassType";
+import { Token } from "../common/Token";
 import { CronExpression } from "../expression";
 import { JobHandler } from "../handler";
 import { JobHandlerMetadataArgs } from "../metadata/JobHandlerMetadataArgs";
@@ -8,7 +9,7 @@ export function Job(
   cronExpression: string | CronExpression,
   options?: {
     name?: string;
-    token?: string | symbol;
+    token?: Token<JobHandler>;
   }
 ) {
   return function (constructor: ClassType<JobHandler> | InstanceType<any>) {

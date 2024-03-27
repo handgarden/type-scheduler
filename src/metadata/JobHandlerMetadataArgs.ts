@@ -1,5 +1,6 @@
 import { Container } from "../common";
 import { ClassType } from "../common/ClassType";
+import { Token } from "../common/Token";
 import { ContainerRequiredError } from "../error/ContainerRequiredError";
 import { CronExpression } from "../expression";
 import { JobHandler } from "../handler";
@@ -8,7 +9,7 @@ export class JobHandlerMetadataArgs {
   public readonly target: ClassType<JobHandler>;
   public readonly cronExpression: string | CronExpression;
   public readonly name?: string;
-  public readonly token?: string | symbol;
+  public readonly token?: Token<JobHandler>;
 
   constructor({
     target,
@@ -19,7 +20,7 @@ export class JobHandlerMetadataArgs {
     target: ClassType<JobHandler>;
     cronExpression: string | CronExpression;
     name?: string;
-    token?: string | symbol;
+    token?: Token<JobHandler>;
   }) {
     this.target = target;
     this.cronExpression = cronExpression;
