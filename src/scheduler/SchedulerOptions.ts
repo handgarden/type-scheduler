@@ -1,19 +1,24 @@
 import { ClassType, Container } from "../common";
 import { JobHandler } from "../handler";
-import { ScheduleRunner } from "./ScheduleRunner";
+import { JobRegistry } from "../registry/JobRegistry";
 
 export class SchedulerOptions {
-  public runner: ScheduleRunner;
   public container?: Container;
   public jobs?: ClassType<JobHandler>[];
+  public registry?: JobRegistry;
 
-  constructor(
-    runner: ScheduleRunner,
-    container?: Container,
-    jobs?: ClassType<JobHandler>[]
-  ) {
-    this.runner = runner;
+  constructor({
+    container,
+    registry,
+    jobs,
+  }: {
+    container?: Container;
+    registry?: JobRegistry;
+    jobs?: ClassType<JobHandler>[];
+  }) {
     this.container = container;
+    this.registry = registry;
     this.jobs = jobs;
   }
 }
+

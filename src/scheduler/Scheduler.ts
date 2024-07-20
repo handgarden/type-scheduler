@@ -1,21 +1,23 @@
+import { CronJob } from "cron";
 import { DefaultJobHandler } from "../handler";
 import { DefaultJobHandlerManager } from "../handler/DefaultJobHandlerManager";
 import { JobHandlerMetadataScanner } from "../metadata/JobHandlerMetadataScanner";
 import { SchedulerOptions } from "./SchedulerOptions";
-import { ScheduleRunner } from "./ScheduleRunner";
+import { JobRegistry } from "../registry/JobRegistry";
+import { DefaultJobRegistry } from "../registry/DefaultJobRegistry";
 
 export class Scheduler {
   private readonly jobHandlerManager: DefaultJobHandlerManager;
-  private readonly runner: ScheduleRunner;
   private readonly metadataScanner: JobHandlerMetadataScanner;
+  private readonly registry: JobRegistry;
 
   constructor(options: SchedulerOptions) {
-    this.runner = options.runner;
     this.jobHandlerManager = new DefaultJobHandlerManager();
     this.metadataScanner = new JobHandlerMetadataScanner({
       manager: this.jobHandlerManager,
       container: options.container,
     });
+    this.registry = options.registry ?? new DefaultJobRegistry();
   }
 
   public start(): void {
@@ -34,7 +36,20 @@ export class Scheduler {
 
   private scheduleJob(job: DefaultJobHandler): void {
     const expression = job.cronExpression;
+    const cronJob = new CronJob(
+      expression,
+      job.handle.bind(job),
+      null,
+      true,
+      job.timezone
+    );
+    cronJob.start();
+    this.registry.addJob(job.name, cronJob);
     console.log(`Scheduling job ${job.name} with expression: ${expression}`);
-    this.runner.schedule(job.cronExpression, job.handle.bind(job));
+  }
+
+  public getJobRegistry(): JobRegistry {
+    return this.registry;
   }
 }
+
