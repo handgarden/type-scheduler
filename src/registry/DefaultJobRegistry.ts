@@ -7,14 +7,14 @@ export class DefaultJobRegistry extends JobRegistry {
   private _jobs: Map<string, CronJob> = new Map();
 
   constructor(
-    timeoutRegistry: Map<string, number>,
-    intervalRegistry: Map<string, number>,
-    jobRegistry: Map<string, CronJob>
+    timeoutRegistry?: Map<string, number>,
+    intervalRegistry?: Map<string, number>,
+    jobRegistry?: Map<string, CronJob>
   ) {
     super();
-    this._timeouts = timeoutRegistry;
-    this._intervals = intervalRegistry;
-    this._jobs = jobRegistry;
+    this._timeouts = timeoutRegistry ?? new Map();
+    this._intervals = intervalRegistry ?? new Map();
+    this._jobs = jobRegistry ?? new Map();
   }
 
   public getTimeouts(): [string, number][] {
@@ -31,7 +31,7 @@ export class DefaultJobRegistry extends JobRegistry {
 
   public addTimeout(name: string, timeout: number): void {
     if (this._timeouts.has(name)) {
-      throw new Error(`Timeout name: ${name} already exists`);
+      throw new Error(`Timeout ${name} already exists`);
     }
     this._timeouts.set(name, timeout);
   }
