@@ -51,8 +51,7 @@ describe(DefaultJobRegistry.name, () => {
       jobMap.set("test", job);
       const jobs = registry.getCrons();
       expect(jobs.length).toEqual(1);
-      expect(jobs[0][0]).toBe("test");
-      expect(jobs[0][1] instanceof CronJob).toBeTruthy();
+      expect(jobs[0]).toBe("test");
     });
   });
 
