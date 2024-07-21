@@ -2,14 +2,14 @@ import { CronJob } from "cron";
 import { DefaultJobRegistry } from "../../src/registry/DefaultJobRegistry";
 
 describe(DefaultJobRegistry.name, () => {
-  let timeoutMap: Map<string, number>;
-  let intervalMap: Map<string, number>;
+  let timeoutMap: Map<string, NodeJS.Timeout>;
+  let intervalMap: Map<string, NodeJS.Timeout>;
   let jobMap: Map<string, CronJob>;
   let registry: DefaultJobRegistry;
 
   beforeEach(() => {
-    timeoutMap = new Map<string, number>();
-    intervalMap = new Map<string, number>();
+    timeoutMap = new Map<string, NodeJS.Timeout>();
+    intervalMap = new Map<string, NodeJS.Timeout>();
     jobMap = new Map<string, CronJob>();
 
     registry = new DefaultJobRegistry(timeoutMap, intervalMap, jobMap);
@@ -21,9 +21,10 @@ describe(DefaultJobRegistry.name, () => {
     });
 
     it("should return an array with element", () => {
-      timeoutMap.set("test", 1000);
-      console.log(registry.getTimeouts());
-      expect(registry.getTimeouts()).toEqual([["test", 1000]]);
+      const timeout = setTimeout(() => {}, 100000);
+      timeoutMap.set("test", timeout);
+      expect(registry.getTimeouts()).toEqual(["test"]);
+      clearTimeout(timeout);
     });
   });
 
@@ -33,8 +34,10 @@ describe(DefaultJobRegistry.name, () => {
     });
 
     it("should return an array with element", () => {
-      intervalMap.set("test", 1000);
-      expect(registry.getIntervals()).toEqual([["test", 1000]]);
+      const interval = setInterval(() => {}, 100000);
+      intervalMap.set("test", interval);
+      expect(registry.getIntervals()).toEqual(["test"]);
+      clearInterval(interval);
     });
   });
 
@@ -55,32 +58,42 @@ describe(DefaultJobRegistry.name, () => {
 
   describe("addTimeout", () => {
     it("should add a timeout", () => {
-      registry.addTimeout("test", 1000);
-      expect(timeoutMap.get("test")).toBe(1000);
+      const timeout = setTimeout(() => {}, 100000);
+      registry.addTimeout("test", timeout);
+      expect(timeoutMap.get("test")).toBe(timeout);
+      clearTimeout(timeout);
     });
 
     it("should throw an error if timeout already exists", () => {
-      registry.addTimeout("test", 1000);
+      const timeout = setTimeout(() => {}, 100000);
+      registry.addTimeout("test", timeout);
       try {
-        registry.addTimeout("test", 1000);
+        registry.addTimeout("test", timeout);
       } catch (e: any) {
         expect(e.message).toBe("Timeout test already exists");
+      } finally {
+        clearTimeout(timeout);
       }
     });
   });
 
   describe("addInterval", () => {
     it("should add an interval", () => {
-      registry.addInterval("test", 1000);
-      expect(intervalMap.get("test")).toBe(1000);
+      const interval = setInterval(() => {}, 100000);
+      registry.addInterval("test", interval);
+      expect(intervalMap.get("test")).toBe(interval);
+      clearInterval(interval);
     });
 
     it("should throw an error if interval already exists", () => {
-      registry.addInterval("test", 1000);
+      const interval = setInterval(() => {}, 100000);
+      registry.addInterval("test", interval);
       try {
-        registry.addInterval("test", 1000);
+        registry.addInterval("test", interval);
       } catch (e: any) {
         expect(e.message).toBe("Interval test already exists");
+      } finally {
+        clearInterval(interval);
       }
     });
   });
@@ -106,29 +119,41 @@ describe(DefaultJobRegistry.name, () => {
 
   describe("removeTimeout", () => {
     it("should remove a timeout", () => {
-      registry.addTimeout("test", 1000);
-      registry.removeTimeout("test");
+      const timeout = setTimeout(() => {}, 100000);
+      registry.addTimeout("test", timeout);
+      const deleted = registry.removeTimeout("test");
       expect(registry.getTimeouts()).toEqual([]);
+      expect(deleted).toBe(timeout);
+      clearTimeout(timeout);
     });
 
     it("should remove timeout from map", () => {
-      registry.addTimeout("test", 1000);
-      registry.removeTimeout("test");
+      const timeout = setTimeout(() => {}, 100000);
+      registry.addTimeout("test", timeout);
+      const deleted = registry.removeTimeout("test");
       expect(timeoutMap.get("test")).toBeUndefined();
+      expect(deleted).toBe(timeout);
+      clearTimeout(timeout);
     });
   });
 
   describe("removeInterval", () => {
     it("should remove an interval", () => {
-      registry.addInterval("test", 1000);
-      registry.removeInterval("test");
+      const interval = setInterval(() => {}, 100000);
+      registry.addInterval("test", interval);
+      const deleted = registry.removeInterval("test");
       expect(registry.getIntervals()).toEqual([]);
+      expect(deleted).toBe(interval);
+      clearInterval(interval);
     });
 
     it("should remove interval from map", () => {
-      registry.addInterval("test", 1000);
-      registry.removeInterval("test");
+      const interval = setInterval(() => {}, 100000);
+      registry.addInterval("test", interval);
+      const deleted = registry.removeInterval("test");
       expect(intervalMap.get("test")).toBeUndefined();
+      expect(deleted).toBe(interval);
+      clearInterval(interval);
     });
   });
 
@@ -136,21 +161,17 @@ describe(DefaultJobRegistry.name, () => {
     it("should remove a job", () => {
       const job = new CronJob("* * * * * *", () => {});
       registry.addJob("test", job);
-      registry.removeJob("test");
+      const deleted = registry.removeJob("test");
       expect(registry.getJobs()).toEqual([]);
+      expect(deleted).toBe(job);
     });
 
     it("should remove job from map", () => {
       const job = new CronJob("* * * * * *", () => {});
       registry.addJob("test", job);
-      registry.removeJob("test");
+      const deleted = registry.removeJob("test");
       expect(jobMap.get("test")).toBeUndefined();
-    });
-
-    it("should stop job", () => {
-      const job = new CronJob("* * * * * *", () => {});
-      registry.addJob("test", job);
-      registry.removeJob("test");
+      expect(deleted).toBe(job);
     });
   });
 });
