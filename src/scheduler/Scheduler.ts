@@ -48,7 +48,7 @@ export class Scheduler {
     console.log(`Scheduling job ${job.name} with expression: ${expression}`);
   }
 
-  public getJobRegistry(): JobRegistry {
+  public getRegistry(): JobRegistry {
     return this.registry;
   }
 }
