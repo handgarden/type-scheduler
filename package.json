@@ -17,7 +17,10 @@
   "author": "handgarden <sjungwon03@gmail.com> (https://github.com/handgarden)",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/handgarden/type-scheduler"
+  },
+  "publishConfig": {
+    "@YOUR-USERNAME:registry": "https://npm.pkg.github.com"
   },
   "files": [
     "dist"
