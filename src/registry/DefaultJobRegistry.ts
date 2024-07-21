@@ -25,8 +25,8 @@ export class DefaultJobRegistry extends JobRegistry {
     return Array.from(this._intervals.keys());
   }
 
-  public getCrons(): [string, CronJob][] {
-    return Array.from(this._jobs.entries());
+  public getCrons(): string[] {
+    return Array.from(this._jobs.keys());
   }
 
   public getTimeout(name: string): NodeJS.Timeout | undefined {

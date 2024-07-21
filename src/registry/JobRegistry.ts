@@ -3,7 +3,7 @@ import { CronJob } from "cron";
 export abstract class JobRegistry {
   public abstract getTimeouts(): string[];
   public abstract getIntervals(): string[];
-  public abstract getCrons(): [string, CronJob][];
+  public abstract getCrons(): string[];
   public abstract getTimeout(name: string): NodeJS.Timeout | undefined;
   public abstract getInterval(name: string): NodeJS.Timeout | undefined;
   public abstract getCron(name: string): CronJob | undefined;
