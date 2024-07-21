@@ -56,6 +56,32 @@ describe(DefaultJobRegistry.name, () => {
     });
   });
 
+  describe("getTimeout", () => {
+    it("should return a timeout", () => {
+      const timeout = setTimeout(() => {}, 100000);
+      timeoutMap.set("test", timeout);
+      expect(registry.getTimeout("test")).toBe(timeout);
+      clearTimeout(timeout);
+    });
+  });
+
+  describe("getInterval", () => {
+    it("should return an interval", () => {
+      const interval = setInterval(() => {}, 100000);
+      intervalMap.set("test", interval);
+      expect(registry.getInterval("test")).toBe(interval);
+      clearInterval(interval);
+    });
+  });
+
+  describe("getJob", () => {
+    it("should return a job", () => {
+      const job = new CronJob("* * * * * *", () => {});
+      jobMap.set("test", job);
+      expect(registry.getCron("test")).toBe(job);
+    });
+  });
+
   describe("addTimeout", () => {
     it("should add a timeout", () => {
       const timeout = setTimeout(() => {}, 100000);

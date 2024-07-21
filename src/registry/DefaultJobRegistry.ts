@@ -29,6 +29,18 @@ export class DefaultJobRegistry extends JobRegistry {
     return Array.from(this._jobs.entries());
   }
 
+  public getTimeout(name: string): NodeJS.Timeout | undefined {
+    return this._timeouts.get(name);
+  }
+
+  public getInterval(name: string): NodeJS.Timeout | undefined {
+    return this._intervals.get(name);
+  }
+
+  public getCron(name: string): CronJob | undefined {
+    return this._jobs.get(name);
+  }
+
   public addTimeout(name: string, timeout: NodeJS.Timeout): void {
     if (this._timeouts.has(name)) {
       throw new Error(`Timeout ${name} already exists`);
