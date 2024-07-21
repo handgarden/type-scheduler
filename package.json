@@ -32,7 +32,9 @@
       "default": "./dist/index.js"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "cron": "^3.1.7"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.28",
@@ -40,6 +42,9 @@
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.2"
+  },
+  "peerDependencies": {
+    "cron": "^3.1.7"
   },
   "scripts": {
     "test": "jest --silent",
@@ -71,3 +76,4 @@
     ]
   }
 }
+

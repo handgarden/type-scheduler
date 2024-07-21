@@ -10,6 +10,7 @@ export function Job(
   options?: {
     name?: string;
     token?: Token<JobHandler>;
+    timezone?: string;
   }
 ) {
   return function (constructor: ClassType<JobHandler> | InstanceType<any>) {

@@ -1,10 +1,10 @@
 import { DefaultJobHandlerManager } from "../../src/handler/DefaultJobHandlerManager";
-import { ScheduleRunner } from "../../src/scheduler/ScheduleRunner";
 import { Scheduler } from "../../src/scheduler/Scheduler";
 import { SchedulerOptions } from "../../src";
 import { Container } from "../../src/common";
 import { JobHandlerMetadataScanner } from "../../src/metadata/JobHandlerMetadataScanner";
 import { DefaultJobHandler } from "../../src/handler";
+import { CronJob } from "cron";
 
 let jobHandlerManager: DefaultJobHandlerManager = {
   addHandlers: jest.fn(),
@@ -33,15 +33,10 @@ jest.mock("../../src/metadata/JobHandlerMetadataScanner", () => {
 
 describe(Scheduler, () => {
   let scheduler: Scheduler;
-  let runner: ScheduleRunner;
   let options: SchedulerOptions;
   let container: Container;
 
   beforeEach(() => {
-    runner = {
-      schedule: jest.fn(),
-    } as unknown as ScheduleRunner;
-
     container = {
       get: jest.fn(),
     };
@@ -59,11 +54,12 @@ describe(Scheduler, () => {
     } as unknown as DefaultJobHandlerManager;
 
     options = {
-      runner,
       container,
     } as unknown as SchedulerOptions;
 
     scheduler = new Scheduler(options);
+
+    CronJob.prototype.start = jest.fn();
   });
 
   describe("start", () => {
@@ -92,7 +88,8 @@ describe(Scheduler, () => {
 
       scheduler.start();
 
-      expect(runner.schedule).toHaveBeenCalled();
+      expect(CronJob.prototype.start).toHaveBeenCalled();
     });
   });
 });
+

@@ -3,3 +3,4 @@ export * from "./expression";
 export * from "./handler/JobHandler";
 export * from "./metadata";
 export * from "./scheduler";
+export * from "./registry";
