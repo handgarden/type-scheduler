@@ -1,5 +1,5 @@
 {
-  "name": "type-scheduler",
+  "name": "@handgarden/type-scheduler",
   "version": "0.0.2-beta",
   "description": "Decorator based abstract scheduler for TypeScript",
   "keywords": [
