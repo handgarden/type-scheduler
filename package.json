@@ -43,6 +43,9 @@
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.2"
   },
+  "peerDependencies": {
+    "cron": "^3.1.7"
+  },
   "scripts": {
     "test": "jest --silent",
     "test:coverage": "jest --coverage --silent",
@@ -73,3 +76,4 @@
     ]
   }
 }
+
