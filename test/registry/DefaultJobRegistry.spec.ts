@@ -43,13 +43,13 @@ describe(DefaultJobRegistry.name, () => {
 
   describe("getJobs", () => {
     it("should return an empty array", () => {
-      expect(registry.getJobs()).toEqual([]);
+      expect(registry.getCrons()).toEqual([]);
     });
 
     it("should return an array with element", () => {
       const job = new CronJob("* * * * * *", () => {});
       jobMap.set("test", job);
-      const jobs = registry.getJobs();
+      const jobs = registry.getCrons();
       expect(jobs.length).toEqual(1);
       expect(jobs[0][0]).toBe("test");
       expect(jobs[0][1] instanceof CronJob).toBeTruthy();
@@ -101,16 +101,16 @@ describe(DefaultJobRegistry.name, () => {
   describe("addJob", () => {
     it("should add a job", () => {
       const job = new CronJob("* * * * * *", () => {});
-      registry.addJob("test", job);
+      registry.addCron("test", job);
       const added = jobMap.get("test");
       expect(added).not.toBeUndefined();
     });
 
     it("should throw an error if job already exists", () => {
       const job = new CronJob("* * * * * *", () => {});
-      registry.addJob("test", job);
+      registry.addCron("test", job);
       try {
-        registry.addJob("test", job);
+        registry.addCron("test", job);
       } catch (e: any) {
         expect(e.message).toBe("Job test already exists");
       }
@@ -160,16 +160,16 @@ describe(DefaultJobRegistry.name, () => {
   describe("removeJob", () => {
     it("should remove a job", () => {
       const job = new CronJob("* * * * * *", () => {});
-      registry.addJob("test", job);
-      const deleted = registry.removeJob("test");
-      expect(registry.getJobs()).toEqual([]);
+      registry.addCron("test", job);
+      const deleted = registry.removeCron("test");
+      expect(registry.getCrons()).toEqual([]);
       expect(deleted).toBe(job);
     });
 
     it("should remove job from map", () => {
       const job = new CronJob("* * * * * *", () => {});
-      registry.addJob("test", job);
-      const deleted = registry.removeJob("test");
+      registry.addCron("test", job);
+      const deleted = registry.removeCron("test");
       expect(jobMap.get("test")).toBeUndefined();
       expect(deleted).toBe(job);
     });

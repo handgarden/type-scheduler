@@ -44,7 +44,7 @@ export class Scheduler {
       job.timezone
     );
     cronJob.start();
-    this.registry.addJob(job.name, cronJob);
+    this.registry.addCron(job.name, cronJob);
     console.log(`Scheduling job ${job.name} with expression: ${expression}`);
   }
 

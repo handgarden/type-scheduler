@@ -25,7 +25,7 @@ export class DefaultJobRegistry extends JobRegistry {
     return Array.from(this._intervals.keys());
   }
 
-  public getJobs(): [string, CronJob][] {
+  public getCrons(): [string, CronJob][] {
     return Array.from(this._jobs.entries());
   }
 
@@ -43,14 +43,14 @@ export class DefaultJobRegistry extends JobRegistry {
     this._intervals.set(name, interval);
   }
 
-  public addJob(name: string, job: CronJob): void {
+  public addCron(name: string, job: CronJob): void {
     if (this._jobs.has(name)) {
       throw new Error(`Job ${name} already exists`);
     }
     this._jobs.set(name, job);
   }
 
-  public removeJob(name: string): CronJob | undefined {
+  public removeCron(name: string): CronJob | undefined {
     const job = this._jobs.get(name);
     this._jobs.delete(name);
     return job;

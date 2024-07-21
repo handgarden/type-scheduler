@@ -8,13 +8,13 @@ describe(SchedulerOptions, () => {
         get: jest.fn(),
       };
       const registry: JobRegistry = {
-        getJobs: jest.fn(),
-        addJob: jest.fn(),
+        getCrons: jest.fn(),
+        addCron: jest.fn(),
         addInterval: jest.fn(),
         addTimeout: jest.fn(),
         getTimeouts: jest.fn(),
         getIntervals: jest.fn(),
-        removeJob: jest.fn(),
+        removeCron: jest.fn(),
         removeInterval: jest.fn(),
         removeTimeout: jest.fn(),
       };
