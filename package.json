@@ -1,6 +1,6 @@
 {
   "name": "type-scheduler",
-  "version": "0.0.1-beta",
+  "version": "0.0.2-beta",
   "description": "Decorator based abstract scheduler for TypeScript",
   "keywords": [
     "scheduler",
@@ -76,4 +76,3 @@
     ]
   }
 }
-
