@@ -2,13 +2,13 @@ import { CronJob } from "cron";
 import { JobRegistry } from "./JobRegistry";
 
 export class DefaultJobRegistry extends JobRegistry {
-  private _timeouts: Map<string, number> = new Map();
-  private _intervals: Map<string, number> = new Map();
+  private _timeouts: Map<string, NodeJS.Timeout> = new Map();
+  private _intervals: Map<string, NodeJS.Timeout> = new Map();
   private _jobs: Map<string, CronJob> = new Map();
 
   constructor(
-    timeoutRegistry?: Map<string, number>,
-    intervalRegistry?: Map<string, number>,
+    timeoutRegistry?: Map<string, NodeJS.Timeout>,
+    intervalRegistry?: Map<string, NodeJS.Timeout>,
     jobRegistry?: Map<string, CronJob>
   ) {
     super();
@@ -17,26 +17,26 @@ export class DefaultJobRegistry extends JobRegistry {
     this._jobs = jobRegistry ?? new Map();
   }
 
-  public getTimeouts(): [string, number][] {
-    return Array.from(this._timeouts.entries());
+  public getTimeouts(): string[] {
+    return Array.from(this._timeouts.keys());
   }
 
-  public getIntervals(): [string, number][] {
-    return Array.from(this._intervals.entries());
+  public getIntervals(): string[] {
+    return Array.from(this._intervals.keys());
   }
 
   public getJobs(): [string, CronJob][] {
     return Array.from(this._jobs.entries());
   }
 
-  public addTimeout(name: string, timeout: number): void {
+  public addTimeout(name: string, timeout: NodeJS.Timeout): void {
     if (this._timeouts.has(name)) {
       throw new Error(`Timeout ${name} already exists`);
     }
     this._timeouts.set(name, timeout);
   }
 
-  public addInterval(name: string, interval: number): void {
+  public addInterval(name: string, interval: NodeJS.Timeout): void {
     if (this._intervals.has(name)) {
       throw new Error(`Interval ${name} already exists`);
     }
@@ -50,25 +50,21 @@ export class DefaultJobRegistry extends JobRegistry {
     this._jobs.set(name, job);
   }
 
-  public removeJob(name: string): void {
+  public removeJob(name: string): CronJob | undefined {
     const job = this._jobs.get(name);
-    job?.stop();
     this._jobs.delete(name);
+    return job;
   }
 
-  public removeTimeout(name: string): void {
-    const id = this._timeouts.get(name);
-    if (id) {
-      clearTimeout(id);
-    }
+  public removeTimeout(name: string): NodeJS.Timeout | undefined {
+    const timeout = this._timeouts.get(name);
     this._timeouts.delete(name);
+    return timeout;
   }
 
-  public removeInterval(name: string): void {
-    const id = this._intervals.get(name);
-    if (id) {
-      clearInterval(id);
-    }
+  public removeInterval(name: string): NodeJS.Timeout | undefined {
+    const interval = this._intervals.get(name);
     this._intervals.delete(name);
+    return interval;
   }
 }
