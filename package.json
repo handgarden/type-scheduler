@@ -1,6 +1,6 @@
 {
   "name": "type-scheduler",
-  "version": "0.0.2",
+  "version": "0.1.0-beta",
   "description": "Decorator based abstract scheduler for TypeScript",
   "keywords": [
     "scheduler",
@@ -50,7 +50,7 @@
     "test": "jest --silent",
     "test:coverage": "jest --coverage --silent",
     "build": "npx rimraf ./dist && tsc -p tsconfig.build.json",
-    "publish": "npm run test && npm run build && npm publish --access public"
+    "test-publish": "npm run test && npm run build && npm publish --access public"
   },
   "jest": {
     "moduleFileExtensions": [
